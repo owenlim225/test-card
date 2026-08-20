@@ -1,0 +1,1139 @@
+:root {
+  --blue: #42a5ff;
+
+  --card: #131318;
+  --card-2: #0e0e13;
+
+  --text: #f4f4f4;
+  --muted: rgba(255, 255, 255, 0.62);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  display: grid;
+  place-items: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      #232323,
+      #080808 55%,
+      #020202
+    );
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: white;
+}
+
+button {
+  font: inherit;
+}
+
+.page-shell {
+  width: min(96vw, 1180px);
+  padding: 30px;
+
+  perspective: 1600px;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.profile-card {
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 1.56 / 1;
+
+  overflow: hidden;
+
+  border-radius: 32px;
+
+  background:
+    radial-gradient(
+      circle at var(--mx) var(--my),
+      rgba(255, 255, 255, 0.055),
+      transparent 24%
+    ),
+    linear-gradient(
+      140deg,
+      #17171d 0%,
+      #121217 45%,
+      #0e0e13 100%
+    );
+
+  border: 5px solid rgba(255, 255, 255, 0.055);
+
+  box-shadow:
+    0 55px 120px rgba(0, 0, 0, 0.55),
+    0 12px 35px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.9);
+
+  transform:
+    rotateX(var(--rx))
+    rotateY(var(--ry))
+    translateZ(0);
+
+  transform-style: preserve-3d;
+
+  transition:
+    transform 110ms ease-out,
+    box-shadow 180ms ease;
+
+  will-change: transform;
+}
+
+
+/* =========================================================
+   CARD MATERIAL
+   ========================================================= */
+
+.material-noise {
+  position: absolute;
+  inset: 0;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  opacity: 0.13;
+
+  mix-blend-mode: soft-light;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.22'/%3E%3C/svg%3E");
+}
+
+.material-light {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at var(--mx) var(--my),
+      rgba(255, 255, 255, 0.08),
+      transparent 18%
+    );
+
+  mix-blend-mode: screen;
+}
+
+
+/* =========================================================
+   CRYPTITA DEBOSSED BACKGROUND
+
+   SVG FILE:
+   /cryptita-pattern.svg
+
+   This does NOT display the SVG normally.
+   The SVG is used as a MASK.
+
+   Therefore the original purple SVG becomes grey/black
+   automatically.
+   ========================================================= */
+
+.cryptita-deboss {
+  /*
+    MAIN POSITION CONTROLS
+
+    Increase width = bigger artwork
+    Change right = move left/right
+    Change top = move up/down
+  */
+
+  --deboss-size: 78%;
+
+  position: absolute;
+
+  z-index: 1;
+
+  width: var(--deboss-size);
+  aspect-ratio: 1 / 1;
+
+  /*
+    Push most of the logo outside the card.
+
+    This creates the cropped / partial-logo appearance
+    from your Figma reference.
+  */
+
+  right: -34%;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  /*
+    This controls the visibility of the ENTIRE effect.
+
+    Recommended:
+    0.30 - extremely subtle
+    0.45 - subtle
+    0.60 - easier to see
+  */
+
+opacity: 0.26;
+}
+
+
+/* All three layers use exactly the same SVG */
+
+.deboss-shadow,
+.deboss-highlight,
+.deboss-face {
+  position: absolute;
+
+  inset: 0;
+
+  /*
+    Use the SVG as a transparency mask.
+  */
+
+  -webkit-mask-image: url("./cryptita.svg");
+  mask-image: url("./cryptita.svg");
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+
+  pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------
+   DARK RECESSED EDGE
+
+   Shifted slightly down/right.
+
+   This creates the deepest part of the impression.
+   --------------------------------------------------------- */
+
+.deboss-shadow {
+  transform: translate(2.2px, 2.2px);
+
+  background: rgba(0, 0, 0, 0.72);
+
+  filter: blur(0.7px);
+
+  opacity: 0.9;
+}
+
+
+/* ---------------------------------------------------------
+   TINY HIGHLIGHT
+
+   Shifted up/left.
+
+   This is what tricks the eye into seeing physical depth.
+   --------------------------------------------------------- */
+
+.deboss-highlight {
+  transform: translate(-1.2px, -1.2px);
+
+  background: rgba(255, 255, 255, 0.055);
+
+  filter: blur(0.2px);
+
+  opacity: 0.7;
+}
+
+
+/* ---------------------------------------------------------
+   RECESSED SURFACE
+
+   Barely lighter/different than the card itself.
+   --------------------------------------------------------- */
+
+.deboss-face {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(34, 34, 40, 0.38),
+      rgba(4, 4, 7, 0.52)
+    );
+
+  opacity: 0.68;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.card-top {
+  position: relative;
+
+  z-index: 5;
+
+  height: 18%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 34px 50px 0;
+}
+
+.brand h2 {
+  margin: 0;
+
+  font-size: clamp(22px, 2.5vw, 34px);
+  font-weight: 800;
+
+  line-height: 1;
+
+  letter-spacing: -0.02em;
+}
+
+.brand p {
+  margin: 7px 0 0;
+
+  color: var(--blue);
+
+  font-size: clamp(12px, 1.35vw, 17px);
+  font-weight: 500;
+
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   SHARED FIELD TYPOGRAPHY
+   ========================================================= */
+
+.field-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--blue);
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 0.11em;
+
+  text-transform: uppercase;
+}
+
+.field-value {
+  display: block;
+
+  color: rgba(255, 255, 255, 0.84);
+
+  font-size: clamp(13px, 1.25vw, 17px);
+  font-weight: 500;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================================
+   BUILDER SERIAL NUMBER
+   ========================================================= */
+
+.builder-number {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  min-width: 120px;
+
+  padding-left: 22px;
+
+  text-align: right;
+}
+
+/* Small vertical accent line */
+
+.builder-number::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 3px;
+  bottom: 3px;
+
+  width: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      var(--blue) 25%,
+      var(--blue) 75%,
+      transparent
+    );
+
+  opacity: 0.65;
+}
+
+.builder-number-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+}
+
+.builder-number-value {
+  display: flex;
+  align-items: baseline;
+
+  gap: 4px;
+}
+
+.builder-number-value strong {
+  color: rgba(255, 255, 255, 0.94);
+
+  font-size: 27px;
+  font-weight: 700;
+
+  line-height: 2;
+
+  letter-spacing: 0.12em;
+
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   MAIN PROFILE
+   ========================================================= */
+
+.card-main {
+  position: relative;
+
+  z-index: 5;
+
+  height: 57%;
+
+  display: grid;
+
+  grid-template-columns:
+    25%
+    1fr;
+
+  gap: 40px;
+
+  align-items: center;
+
+  padding: 4px 50px 8px;
+}
+
+
+/* =========================================================
+   PHOTO
+   ========================================================= */
+
+.profile-photo-wrap {
+  width: 100%;
+
+  aspect-ratio: 0.79 / 1;
+
+  padding: 2px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.16),
+      rgba(255, 255, 255, 0.02)
+    );
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.32),
+    inset 0 1px rgba(255, 255, 255, 0.07);
+}
+
+.profile-photo {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border-radius: 16px;
+}
+
+
+/* =========================================================
+   IDENTITY
+   ========================================================= */
+
+.profile-details {
+  min-width: 0;
+}
+
+.identity-header {
+  margin-bottom: 22px;
+}
+
+.identity-header .field-label {
+  margin-bottom: 7px;
+}
+
+.identity-header h1 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(27px, 3.5vw, 47px);
+  font-weight: 800;
+
+  line-height: 0.98;
+
+  letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   INFORMATION ROWS
+   ========================================================= */
+
+.info-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1.5fr)
+    minmax(0, 0.8fr);
+
+  gap: 25px;
+
+  margin-top: 19px;
+}
+
+.info-field {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   FULL WIDTH FIELDS
+   ========================================================= */
+
+.wide-field {
+  margin-top: 20px;
+}
+
+.skills-field {
+  margin-top: 19px;
+}
+
+
+/* =========================================================
+   SKILLS
+   ========================================================= */
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 8px;
+}
+
+.skills span {
+  padding: 6px 13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.012),
+      rgba(0, 0, 0, 0.08)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.018),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.6);
+
+  color: rgba(255, 255, 255, 0.68);
+
+  font-size: 11px;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   FLIP BUTTON
+   ========================================================= */
+
+.flip-btn {
+  position: absolute;
+
+  right: -4px;
+  top: 48%;
+
+  transform: translateY(-50%);
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 11px 25px 11px 18px;
+
+  border: none;
+
+  border-radius: 15px 0 0 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #319dff,
+      #48d1e9
+    );
+
+  color: white;
+
+  font-family: Georgia, serif;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+
+  transition:
+    transform 160ms ease,
+    filter 160ms ease;
+}
+
+.flip-btn:hover {
+  transform:
+    translateY(-50%)
+    translateX(-4px);
+
+  filter: brightness(1.08);
+}
+
+.flip-icon {
+  font-size: 23px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   ON-CHAIN PANEL
+   ========================================================= */
+
+.card-bottom {
+  position: relative;
+
+  z-index: 5;
+
+  height: 18%;
+
+  margin: 0 50px 28px;
+
+  display: grid;
+
+  grid-template-columns:
+    0.8fr 1px
+    1fr 1px
+    1.35fr 1px
+    1.35fr 1px
+    88px;
+
+  align-items: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.065);
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(0, 0, 0, 0.11)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.38),
+    0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.credential-field {
+  min-width: 0;
+
+  padding: 13px 26px;
+}
+
+.credential-value {
+  display: block;
+
+  color: rgba(255, 255, 255, 0.84);
+
+  font-size: clamp(12px, 1.25vw, 16px);
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+
+/* =========================================================
+   SUI LOGO BOX
+   ========================================================= */
+
+.sui-link-box {
+  width: 62px;
+  height: 62px;
+
+  justify-self: center;
+
+  display: grid;
+  place-items: center;
+
+  text-decoration: none;
+
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 13px;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(255, 255, 255, 0.04),
+      transparent 45%
+    ),
+    rgba(8, 8, 12, 0.38);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.45);
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.sui-link-box:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(66, 165, 255, 0.35);
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(66, 165, 255, 0.09),
+      transparent 55%
+    ),
+    rgba(8, 8, 12, 0.5);
+}
+
+.sui-logo {
+  display: block;
+
+  width: 32px;
+  height: 32px;
+
+  object-fit: contain;
+
+  opacity: 0.88;
+
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.sui-link-box:hover .sui-logo {
+  opacity: 1;
+
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   NETWORK
+   ========================================================= */
+
+.network-value {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: rgba(255, 255, 255, 0.86);
+
+  font-size: clamp(12px, 1.25vw, 16px);
+  font-weight: 600;
+}
+
+.sui-symbol {
+  color: var(--blue);
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   OBJECT / OWNER
+   ========================================================= */
+
+.value-row {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  min-width: 0;
+
+  color: rgba(255, 255, 255, 0.84);
+
+  font-size: clamp(12px, 1.2vw, 16px);
+  font-weight: 500;
+}
+
+.value-row > span {
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+}
+
+.icon-btn {
+  flex: 0 0 auto;
+
+  appearance: none;
+
+  padding: 2px;
+
+  border: none;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  background: transparent;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition:
+    color 130ms ease,
+    transform 130ms ease;
+}
+
+.icon-btn:hover {
+  color: var(--blue);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DIVIDERS
+   ========================================================= */
+
+.divider {
+  width: 1px;
+  height: 55%;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .page-shell {
+    width: 98vw;
+
+    padding: 12px;
+  }
+
+  .profile-card {
+    aspect-ratio: auto;
+
+    min-height: 800px;
+  }
+
+  .card-top {
+    height: auto;
+
+    padding-bottom: 25px;
+  }
+
+  .card-main {
+    height: auto;
+
+    grid-template-columns:
+      180px
+      1fr;
+
+    gap: 27px;
+
+    padding-bottom: 30px;
+  }
+
+  .info-grid {
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 18px;
+  }
+
+.card-bottom {
+  position: relative;
+  z-index: 5;
+
+  height: 18%;
+  margin: 0 50px 28px;
+
+  display: grid;
+
+  /* Balanced spacing */
+  grid-template-columns:
+    1fr 1px
+    1fr 1px
+    1fr 1px
+    1fr 1px
+    92px;
+
+  align-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.018),
+      rgba(0, 0, 0, 0.11)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.38),
+    0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+  .credential-field {
+    min-height: 85px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  /*
+    Keep artwork large on tablets.
+  */
+
+  .cryptita-deboss {
+    --deboss-size: 90%;
+
+    right: -45%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .card-top,
+  .card-main {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .card-top {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .brand h2 {
+    font-size: 20px;
+  }
+
+  .builder-number {
+    min-width: 100px;
+
+    padding: 10px 13px;
+  }
+
+  .card-main {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-photo-wrap {
+    width: 150px;
+  }
+
+  .identity-header h1 {
+    font-size: 32px;
+  }
+
+  .info-grid {
+    grid-template-columns:
+      1fr
+      1fr;
+
+    gap: 20px 16px;
+  }
+
+  .card-bottom {
+    margin:
+      0
+      24px
+      24px;
+
+    grid-template-columns: 1fr;
+  }
+
+  .credential-field {
+    min-height: 76px;
+
+    border-bottom:
+      1px solid
+      rgba(255, 255, 255, 0.055);
+  }
+
+  .credential-field:last-child {
+    border-bottom: none;
+  }
+
+  .flip-btn {
+    position: relative;
+
+    right: auto;
+    top: auto;
+
+    width: max-content;
+
+    margin-top: 22px;
+
+    transform: none;
+
+    border-radius: 14px;
+  }
+
+  .flip-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  /*
+    Background pattern stays toward the right.
+  */
+
+  .cryptita-deboss {
+    --deboss-size: 135%;
+
+    right: -85%;
+
+    top: 42%;
+
+    opacity: 0.35;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 440px) {
+
+  .card-top {
+    flex-direction: column;
+  }
+
+  .builder-number {
+    text-align: left;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills span {
+    font-size: 10px;
+  }
+}
