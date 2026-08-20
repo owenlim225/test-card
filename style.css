@@ -20,10 +20,13 @@
 
 body {
   margin: 0;
+
   min-height: 100vh;
 
   display: grid;
   place-items: center;
+
+  overflow: hidden;
 
   background:
     radial-gradient(
@@ -50,8 +53,14 @@ button {
 }
 
 .page-shell {
-  width: min(96vw, 1180px);
-  padding: 30px;
+  width: min(
+    89vw,
+    1020px,
+    calc((97vh - 60px) * 1.56)
+  );
+
+  padding: 20px;
+  margin: 0 auto;
 
   perspective: 1600px;
 }
@@ -886,11 +895,18 @@ opacity: 0.26;
 
 @media (max-width: 900px) {
 
-  .page-shell {
-    width: 98vw;
+.page-shell {
+  width: min(
+    89vw,
+    1020px,
+    calc((97vh - 60px) * 1.56)
+  );
 
-    padding: 12px;
-  }
+  padding: 20px;
+  margin: 0 auto;
+
+  perspective: 1600px;
+}
 
   .profile-card {
     aspect-ratio: auto;
