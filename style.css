@@ -64,50 +64,22 @@ button {
 .profile-card {
   --mx: 50%;
   --my: 50%;
-  --rx: 0deg;
-  --ry: 0deg;
 
   position: relative;
 
   width: 100%;
   aspect-ratio: 1.56 / 1;
 
-  overflow: hidden;
-
   border-radius: 32px;
 
-  background:
-    radial-gradient(
-      circle at var(--mx) var(--my),
-      rgba(255, 255, 255, 0.055),
-      transparent 24%
-    ),
-    linear-gradient(
-      140deg,
-      #17171d 0%,
-      #121217 45%,
-      #0e0e13 100%
-    );
-
-  border: 5px solid rgba(255, 255, 255, 0.055);
-
-  box-shadow:
-    0 55px 120px rgba(0, 0, 0, 0.55),
-    0 12px 35px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.035),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.9);
-
-  transform:
-    rotateX(var(--rx))
-    rotateY(var(--ry))
-    translateZ(0);
-
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 
   transition:
-    transform 110ms ease-out,
+    transform 700ms cubic-bezier(0.2, 0.75, 0.2, 1),
     box-shadow 180ms ease;
 
+  cursor: pointer;
   will-change: transform;
 }
 
@@ -155,7 +127,7 @@ button {
    CRYPTITA DEBOSSED BACKGROUND
 
    SVG FILE:
-   /cryptita-pattern.svg
+   /cryptita.svg
 
    This does NOT display the SVG normally.
    The SVG is used as a MASK.
@@ -1136,4 +1108,528 @@ opacity: 0.26;
   .skills span {
     font-size: 10px;
   }
+}
+
+/* =========================================================
+   FLIP SYSTEM
+   ========================================================= */
+
+.card-side {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  border-radius: inherit;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transform-style: preserve-3d;
+}
+
+.card-front {
+  transform: rotateY(0deg);
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.profile-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+
+
+/* =========================================================
+   BACK — CRYPTITA EMBOSSED LOGO
+   ========================================================= */
+
+.back-logo {
+  position: absolute;
+
+  /*
+    SIZE
+  */
+
+  width: 82%;
+  aspect-ratio: 1 / 1;
+
+  /*
+    POSITION
+
+    Negative left creates the half-cut appearance.
+  */
+
+  left: -40%;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  pointer-events: none;
+
+  z-index: 1;
+}
+
+
+/*
+  All three layers use your existing Cryptita SVG.
+*/
+
+.back-logo-shadow,
+.back-logo-highlight,
+.back-logo-face {
+  position: absolute;
+
+  inset: 0;
+
+  -webkit-mask-image:
+    url("./cryptita.svg");
+
+  mask-image:
+    url("./cryptita.svg");
+
+  -webkit-mask-repeat:
+    no-repeat;
+
+  mask-repeat:
+    no-repeat;
+
+  -webkit-mask-position:
+    center;
+
+  mask-position:
+    center;
+
+  -webkit-mask-size:
+    contain;
+
+  mask-size:
+    contain;
+}
+
+
+
+/* ---------------------------------------------------------
+   EMBOSS SHADOW
+
+   Down-right shadow makes the object appear raised.
+   --------------------------------------------------------- */
+
+.back-logo-shadow {
+  transform:
+    translate(5px, 5px);
+
+  background:
+    rgba(0, 0, 0, 0.95);
+
+  filter:
+    blur(2px);
+
+  opacity: 0.95;
+}
+
+
+
+/* ---------------------------------------------------------
+   EMBOSS UPPER EDGE
+   --------------------------------------------------------- */
+
+.back-logo-highlight {
+  transform:
+    translate(-2px, -2px);
+
+  background:
+    rgba(115, 195, 255, 0.28);
+
+  filter:
+    blur(0.4px);
+
+  opacity: 0.75;
+}
+
+
+
+/* ---------------------------------------------------------
+   BLUE RAISED SURFACE
+   --------------------------------------------------------- */
+
+.back-logo-face {
+  background:
+    linear-gradient(
+      145deg,
+      #58b7ff 0%,
+      #43a6f7 45%,
+      #268be2 100%
+    );
+
+  opacity: 0.92;
+
+  animation:
+    cryptita-pulse
+    6s
+    ease-in-out
+    infinite;
+}
+
+
+
+/* =========================================================
+   PERIODIC GLOW
+
+   Mostly calm → slowly lights up → returns to calm.
+   ========================================================= */
+
+@keyframes cryptita-pulse {
+
+  0%,
+  20%,
+  75%,
+  100% {
+
+    opacity: 0.82;
+
+    filter:
+      drop-shadow(
+        0 0 2px
+        rgba(66, 165, 255, 0.15)
+      );
+  }
+
+
+  42% {
+
+    opacity: 0.96;
+
+    filter:
+      drop-shadow(
+        0 0 5px
+        rgba(66, 165, 255, 0.55)
+      )
+
+      drop-shadow(
+        0 0 12px
+        rgba(66, 165, 255, 0.25)
+      );
+  }
+
+
+  50% {
+
+    opacity: 1;
+
+    filter:
+      drop-shadow(
+        0 0 7px
+        rgba(82, 183, 255, 0.85)
+      )
+
+      drop-shadow(
+        0 0 18px
+        rgba(66, 165, 255, 0.45)
+      )
+
+      drop-shadow(
+        0 0 35px
+        rgba(66, 165, 255, 0.14)
+      );
+  }
+
+
+  60% {
+
+    opacity: 0.92;
+
+    filter:
+      drop-shadow(
+        0 0 4px
+        rgba(66, 165, 255, 0.35)
+      );
+  }
+
+}
+
+
+
+/* =========================================================
+   BACK CONTENT
+   ========================================================= */
+
+.back-content {
+  position: absolute;
+
+  z-index: 5;
+
+  /*
+    Starts after the large logo.
+  */
+
+  left: 43%;
+  right: 6%;
+
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  text-align: center;
+}
+
+
+
+/* =========================================================
+   BACK BRAND
+   ========================================================= */
+
+.back-brand h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size:
+    clamp(
+      34px,
+      4vw,
+      58px
+    );
+
+  font-weight: 850;
+
+  line-height: 1;
+
+  letter-spacing: -0.035em;
+}
+
+
+.back-brand p {
+  margin:
+    11px
+    0
+    0;
+
+  color: var(--blue);
+
+  font-size:
+    clamp(
+      13px,
+      1.5vw,
+      19px
+    );
+
+  font-weight: 750;
+
+  letter-spacing: 0.01em;
+}
+
+
+
+/* =========================================================
+   BACK HORIZONTAL LINES
+   ========================================================= */
+
+.back-divider {
+  width: 88%;
+
+  height: 1px;
+
+  margin:
+    38px
+    auto;
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(66, 165, 255, 0.2),
+      rgba(255, 255, 255, 0.07),
+      rgba(66, 165, 255, 0.2),
+      transparent
+    );
+}
+
+
+
+/* =========================================================
+   BUILT ON SUI
+   ========================================================= */
+
+.back-built-on {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 9px;
+
+  color:
+    rgba(255, 255, 255, 0.88);
+
+  font-size:
+    clamp(
+      17px,
+      1.8vw,
+      23px
+    );
+}
+
+
+.back-built-on a {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color:
+    rgba(255, 255, 255, 0.9);
+
+  text-decoration: none;
+
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+
+.back-built-on a:hover {
+  opacity: 0.75;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.back-built-on img {
+  display: block;
+
+  width: 26px;
+  height: 26px;
+
+  object-fit: contain;
+}
+
+
+
+/* =========================================================
+   COMMUNITY PARTNERS
+   ========================================================= */
+
+.community-title {
+  margin-bottom: 19px;
+
+  color:
+    rgba(255, 255, 255, 0.8);
+
+  font-size:
+    clamp(
+      14px,
+      1.4vw,
+      18px
+    );
+
+  font-style: italic;
+}
+
+
+.community-logos {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 17px;
+}
+
+
+.community-placeholder {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color:
+    rgba(255, 255, 255, 0.65);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.04em;
+
+  white-space: nowrap;
+}
+
+
+.placeholder-logo {
+  width: 35px;
+  height: 35px;
+
+  flex: 0 0 auto;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12);
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(0, 0, 0, 0.15)
+    );
+
+  color:
+    rgba(255, 255, 255, 0.75);
+
+  font-size: 12px;
+}
+
+
+.community-logo-divider {
+  width: 1px;
+
+  height: 36px;
+
+  flex: 0 0 auto;
+
+  background:
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(66, 165, 255, 0.3),
+      transparent
+    );
+}
+
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .profile-card {
+    transition-duration: 0.01ms;
+  }
+
+  .back-logo-face {
+    animation: none;
+
+    filter:
+      drop-shadow(
+        0 0 4px
+        rgba(66, 165, 255, 0.3)
+      );
+  }
+
 }

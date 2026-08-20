@@ -1,5 +1,10 @@
 const card = document.getElementById("profileCard");
 
+
+/* =========================================================
+   CARD HOVER / LIGHTING
+   ========================================================= */
+
 card.addEventListener("mousemove", (event) => {
   const rect = card.getBoundingClientRect();
 
@@ -12,41 +17,64 @@ card.addEventListener("mousemove", (event) => {
   const mouseX = px * 100;
   const mouseY = py * 100;
 
-  const rotateY = (px - 0.5) * 5;
-  const rotateX = (0.5 - py) * 4;
-
   card.style.setProperty("--mx", `${mouseX}%`);
   card.style.setProperty("--my", `${mouseY}%`);
-  card.style.setProperty("--rx", `${rotateX}deg`);
-  card.style.setProperty("--ry", `${rotateY}deg`);
 });
+
 
 card.addEventListener("mouseleave", () => {
   card.style.setProperty("--mx", "50%");
   card.style.setProperty("--my", "50%");
-  card.style.setProperty("--rx", "0deg");
-  card.style.setProperty("--ry", "0deg");
 });
 
+
+/* =========================================================
+   FLIP CARD
+   ========================================================= */
+
+card.addEventListener("click", (event) => {
+
+  // Don't flip when clicking interactive elements
+  if (event.target.closest("a, button")) {
+    return;
+  }
+
+  card.classList.toggle("is-flipped");
+
+});
+
+
+/* =========================================================
+   COPY BUTTONS
+   ========================================================= */
+
 document.querySelectorAll("[data-copy]").forEach((button) => {
-  button.addEventListener("click", async () => {
+
+  button.addEventListener("click", async (event) => {
+
+    // Prevent card from flipping when copy is clicked
+    event.stopPropagation();
+
     const value = button.dataset.copy;
 
     try {
+
       await navigator.clipboard.writeText(value);
 
-      const oldText = button.textContent;
+      const originalText = button.textContent;
+
       button.textContent = "✓";
 
       setTimeout(() => {
-        button.textContent = oldText;
+        button.textContent = originalText;
       }, 900);
-    } catch {
-      console.log("Clipboard unavailable.");
-    }
-  });
-});
 
-document.querySelector(".flip-btn").addEventListener("click", () => {
-  alert("You can connect your actual card flip animation here.");
+    } catch (error) {
+
+      console.error("Clipboard unavailable:", error);
+
+    }
+
+  });
+
 });
