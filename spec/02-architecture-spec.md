@@ -2,7 +2,7 @@
 
 Workshop site: a **no-scroll, read-only** card homepage over a WebGL background. On-chain data is created via **Sui CLI + IDE only**; the browser never signs transactions.
 
-> **Struct name:** **`BuilderCard`** / `create_builder_card` — canonical in `01`; `04` must match on rewrite. Env key **`VITE_PORTFOLIO_OBJECT_ID`** holds the created Object ID (workshop continuity).
+> **Struct name:** **`BuilderCard`** / `create_builder_card` — canonical in `01` and `04`. Env key **`VITE_PORTFOLIO_OBJECT_ID`** holds the created Object ID (workshop continuity).
 
 ---
 
